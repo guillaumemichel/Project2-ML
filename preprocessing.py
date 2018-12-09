@@ -5,7 +5,7 @@ from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 
 
-def load_tweets(name_pos, name_neg):
+def load_train_tweets(name_pos, name_neg):
     """Load the positive and negative tweets for training self.
     Returns tweets, and number of tweets of each sentiment
     (useful to set prediction values)"""
@@ -43,7 +43,7 @@ def load_test_tweets(name):
         for line in f:
             # Split on the first "," to get the id and tweet
             id, s = line.split(',', 1)
-            
+
             sentences.append(s)
             ids.append(id)
 
@@ -62,14 +62,16 @@ def tokenize(tweet, stem=False, remove_stop_words=False):
 
     stop = stopwords.words('english')
     stemmer = PorterStemmer()
-    tokenizer = TweetTokenizer()
+    tokenizer = TweetTokenizer(preserve_case=False, strip_handles=True, reduce_len=True)
     tweet = tweet.replace('[^\w\s]','')
     tokens = tokenizer.tokenize(tweet)
 
+    # Option to perform stemming
     if stem:
         tokens = [stemmer.stem(token) for token in tokens]
 
+    # Option to remove stop-words
     if remove_stop_words:
-        tokens = [token for token in tokens if token not in stopwords]
+        tokens = [token for token in tokens if token not in stop]
 
     return tokens
