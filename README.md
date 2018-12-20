@@ -43,7 +43,7 @@ The file contains the function that performs a repeated k-fold cross-validation 
 ### `plot.py`
 The file contains the function used to plot the results of the cross-validation.
 
-### `plotting.py`
+### `cross_val_plotting.py`
 The file contains the methods which generated the graphs presented in the report.
 
 ### `run.py`
