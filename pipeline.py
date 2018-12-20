@@ -4,8 +4,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 import re
 
-def pipeline_model():
+def pipeline_model(lowerbound,upperbound):
     return Pipeline([
-        ('tfidf', TfidfVectorizer(tokenizer=preprocessing.tokenize, ngram_range=(1, 3))),
-        ('classifier', LinearSVC()),
+        ('tfidf', TfidfVectorizer(tokenizer=preprocessing.tokenize, ngram_range=(lowerbound, upperbound))),
+        ('classifier', LinearSVC(random_state=2018)),
         ])

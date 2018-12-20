@@ -75,3 +75,47 @@ def tokenize(tweet, stem=False, remove_stop_words=False):
         tokens = [token for token in tokens if token not in stop]
 
     return tokens
+
+def correct_spelling(sentences, max_edit_distance_lookup=2):
+    """Correct the spelling of the tweets to have a more accurate analysis"""
+    initial_capacity = 83000
+    max_edit_distance_dictionary = 2
+    prefix_length = 7
+    sym_spell = SymSpell(initial_capacity, max_edit_distance_dictionary,prefix_length)
+
+    dictionary_path = os.path.join(os.path.dirname(__file__), "./data/frequency_dictionary_en_82_765.txt")
+    term_index = 0  # column of the term in the dictionary text file
+    count_index = 1  # column of the term frequency in the dictionary text file
+    if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
+        print("Dictionary file not found")
+        return
+
+    corrected_sentences = []
+    # take best suggestion of correction
+    for input in sentences:
+        suggestions = sym_spell.lookup_compound(input, max_edit_distance_lookup)
+        corrected_sentences.append(suggestions[0].term)
+
+    return corrected_sentences
+
+def removeDiamonds(sentences):
+    """Remove the diamonds tags (i.e < url > and < user >) from the tweets"""
+
+    # creating the set of sentences without diamonds
+    newSentences = []
+    for sentence in sentences:
+        inDiamond=False
+        currentIndex=0
+        newSentence=""
+        for i in range(len(sentence)):
+            c = sentence[i]
+            if c == '<':
+                newSentence += sentence[currentIndex:i]
+                inDiamond = True
+                currentIndex = i
+            if c == '>' and inDiamond:
+                currentIndex = i+1
+                inDiamond = False
+        newSentence += sentence[currentIndex:len(sentence)]
+        newSentences.append(newSentence)
+    return newSentences
