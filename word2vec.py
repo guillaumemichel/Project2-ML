@@ -4,7 +4,7 @@ from gensim.models import FastText
 from gensim.models import Word2Vec
 
 
-def create_fast(xtrain, dim, iter):
+def create_w2v(xtrain, dim, iter, fasttext=True):
     """Create and train a FastText model using training tweets"""
 
     # Convert data to Tagged document in order to work with w2v
@@ -13,16 +13,15 @@ def create_fast(xtrain, dim, iter):
     #Get the words
     words = [t.words for t in tagged_data]
 
-    # Create and train a FastText model
-    fast = FastText(size=dim, workers=4, iter=iter, word_ngrams=1)
-    fast.build_vocab(words)
-    fast.train(words, total_examples=fast.corpus_count, epochs=fast.epochs)
+    # Create and train a w2v model
+    model = Word2Vec(size=dim, workers=4, iter=iter)
+    
+    if fasttext = True:
+        model = FastText(size=dim, workers=4, iter=iter, word_ngrams=1)
+    model.build_vocab(words)
+    model.train(words, total_examples=fast.corpus_count, epochs=fast.epochs)
 
     return fast
-
-def create_w2v(xtrain,dim):
-    model = Word2Vec(xtrain, size=dim, window=5, min_count=1, workers=4)
-    return model
     
 def tweets2vec(tweets, dim, model):
     """Convert a list of tweets to their vector representation
