@@ -12,7 +12,7 @@ print('Tokenizing...')
 tokenized_tweets = [preprocessing.tokenize(tweet) for tweet in tweets]
 
 print('Training the fasttext model...')
-model = word2vec.create_fast(tokenized_tweets, dim = 250, iter = 30)
+model = word2vec.create_w2v(tokenized_tweets, dim = 250, iter = 30)
 
 print('Converting tweets to vectors...')
 x_train_vec = word2vec.tweets2vec(tokenized_tweets, dim = 250, model = model)
