@@ -14,14 +14,15 @@ def create_w2v(xtrain, dim, iter, fasttext=True):
     words = [t.words for t in tagged_data]
 
     # Create and train a w2v model
-    model = Word2Vec(size=dim, workers=4, iter=iter)
-    
     if fasttext = True:
         model = FastText(size=dim, workers=4, iter=iter, word_ngrams=1)
+    else:
+        model = Word2Vec(size=dim, workers=4, iter=iter)
+        
     model.build_vocab(words)
     model.train(words, total_examples=fast.corpus_count, epochs=fast.epochs)
 
-    return fast
+    return model
     
 def tweets2vec(tweets, dim, model):
     """Convert a list of tweets to their vector representation
